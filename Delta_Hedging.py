@@ -66,7 +66,7 @@ for t in range(N):
     shares = current_delta
 
     # Total Portfolio Value
-    portfolio_value.append(cash + shares * current_S - option_value)
+    portfolio_value.append(cash + shares * current_S)
 
 # ------------------------------
 # Visualisation
