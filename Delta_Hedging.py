@@ -47,6 +47,7 @@ for t in range(1, N):
 cash = float(input("Enter the initial cash (normally 0): "))                  # Initial cash
 shares = float(input("Enter the initial number of hold shares (normally 0) : "))               # Number of hold shares
 portfolio_value = []     # Hedged portfolio value
+objective_value = []
 
 # Initialization : Selling of the option
 option_initial = call_price(S[0], K, T, r, sigma)
@@ -58,7 +59,6 @@ for t in range(N):
     # Computation of the delta and the value of the option
     current_delta = delta_call(current_S, K, tau, r, sigma)
     option_value = call_price(current_S, K, tau, r, sigma)
-
     # Rebalancing : Hold shares
     delta_shares = current_delta - shares
     cash -= delta_shares * current_S*(1 + transaction_cost * np.sign(delta_shares))
@@ -67,15 +67,15 @@ for t in range(N):
 
     # Total Portfolio Value
     portfolio_value.append(cash + shares * current_S)
-
+    objective_value.append(cash + shares * current_S - option_value)
 # ------------------------------
 # Visualisation
 # ------------------------------
 plt.figure(figsize=(12, 6))
 plt.plot(S, label="Price of the asset (S)")
-plt.plot(portfolio_value, label="Value of the hedged portefolio", linestyle="--")
-plt.axhline(0, color='red', linestyle=':', label="Objective value (neutral for initial cash and shares = 0)")
-plt.title("Delta Hedging of a Call option (Black-Scholes recalculé)")
+plt.plot(portfolio_value, label="Value of the hedged portefolio")
+plt.plot(objective_value, color='red', linestyle=':', label="(Hedged portfolio - option) value (neutral objective for initial cash and shares = 0)")
+plt.title("Delta Hedging of a Call option (Black-Scholes)")
 plt.xlabel("Time (days)")
 plt.ylabel("Value")
 plt.legend()
