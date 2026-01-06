@@ -17,39 +17,8 @@ Underlying Asset
 
 The underlying asset price follows a Geometric Brownian Motion (GBM):
 
-𝑑
-𝑆
-𝑡
-=
-𝜇
-𝑆
-𝑡
-𝑑
-𝑡
-+
-𝜎
-𝑆
-𝑡
-𝑑
-𝑊
-𝑡
-dS
-t
+𝑑𝑆𝑡 = 𝜇𝑆𝑡 𝑑𝑡 + 𝜎𝑆𝑡 𝑑𝑊𝑡
 	​
-
-=μS
-t
-	​
-
-dt+σS
-t
-	​
-
-dW
-t
-	​
-
-
 European options are priced using the Black–Scholes closed-form formulas.
 
 
