@@ -119,7 +119,12 @@ Benchmark case: $S_0=K=100$, $r=\mu=5\%$, $\sigma=20\%$, $T=1$ year, 5,000 Monte
 ## Insights & Observations
 
 - **Delta hedging is perfect only in continuous time.** The standard deviation of the final P&L drops from 5.996 at $N=1$ to 0.440 at $N=252$: discrete rebalancing leaves residual risk that shrinks toward zero as the rebalancing frequency increases, consistent with the continuous-time replication argument underlying Black-Scholes.
-- **Volatility misspecification is directional, not just noise.** Hedging with $\sigma_{hedge} < \sigma_{true}$ (under-estimating volatility) produces systematic losses on a short option position, while $\sigma_{hedge} > \sigma_{true}$ produces systematic gains — the mean P&L moves close to monotonically from -3.86 to +3.97 as the assumed volatility rises from 0.10 to 0.30. This reflects the option seller being short Gamma: under-hedging (low assumed vol → smaller Delta moves) leaves the position exposed to the underlying's actual, larger swings.
+- **Volatility misspecification is directional, not just noise.** Pricing and hedging with $\sigma_{hedge} < \sigma_{true}$ (under-estimating volatility) produces systematic losses on a short option position, while $\sigma_{hedge} > \sigma_{true}$ produces systematic gains: the mean P&L increases from -3.86 to +3.97 as the assumed volatility rises from 0.10 to 0.30, and is close to zero when $\sigma_{hedge} = \sigma_{true}$. This follows from the option seller being short Gamma. Each rebalancing locks in a cost of roughly $\frac{1}{2}\Gamma(\Delta S)^2$, which on average amounts to $\frac{1}{2}\Gamma S^2 \sigma_{true}^2\,dt$, while the time decay earned on the option, priced at $\sigma_{hedge}$, only compensates $\frac{1}{2}\Gamma S^2 \sigma_{hedge}^2\,dt$. The hedging P&L therefore accrues at
+
+$$d\Pi - r\Pi\,dt = \frac{1}{2}\,\Gamma_{hedge}\,S^2\left(\sigma_{hedge}^2 - \sigma_{true}^2\right)dt,$$
+
+whose sign is that of $\sigma_{hedge} - \sigma_{true}$. The magnitudes are consistent with the Black-Scholes premium gap $BS(\sigma_{hedge}) - BS(\sigma_{true})$ (vega ≈ 40 for an at-the-money option with $S_0 = 100$, $T = 1$). The slight asymmetry between the two values reflects the convexity of the option price in volatility. Remaining deviations from strict monotonicity come from Monte Carlo noise and discrete rebalancing.
+
 - **Transaction costs materially erode the benefit of frequent rebalancing.** At $N=252$, adding a realistic 0.5% cost per trade turns a near break-even hedge (mean P&L ≈ 0) into a mean loss of -2.85, and even increases the P&L standard deviation — illustrating the practical trade-off between rebalancing often enough to track Delta and paying too much in trading costs to do so.
 
 ## Possible Extensions
